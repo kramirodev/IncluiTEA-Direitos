@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IncluiTEA-Direitos — Diagrama de Classes</title>
+<style>
+:root{
+  --ink:#1e293b;
+  --muted:#64748b;
+  --faint:#94a3b8;
+  --paper:#f5f7fa;
+  --card:#ffffff;
+  --zoom:1;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:"Segoe UI",Inter,-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);
+  background:#ffffff;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- área do diagrama ---------- */
+.viewport{
+  padding:36px 0 48px;
+  overflow-x:auto;
+  overflow-y:hidden;
+}
+.canvas{
+  position:relative;
+  width:1940px;
+  height:1520px;
+  margin:0 auto;
+  zoom:var(--zoom);
+  background-image:radial-gradient(#e8edf3 1px, transparent 1px);
+  background-size:26px 26px;
+  background-position:12px 12px;
+}
+.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+/* ---------- caixas de classe ---------- */
+.cls{
+  position:absolute;
+  width:300px;
+  border:1px solid var(--bd);
+  border-radius:8px;
+  background:var(--card);
+  box-shadow:0 1px 2px rgba(15,23,42,.05), 0 10px 24px -18px rgba(15,23,42,.35);
+  overflow:hidden;
+  font-size:11px;
+  color:var(--ink);
+  line-height:21px;
+}
+.cls__head{
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--hd);
+  border-bottom:1px solid var(--bd);
+  font-size:12.5px;
+  font-weight:700;
+  letter-spacing:.005em;
+  color:#16303f;
+  text-align:center;
+  padding:0 8px;
+  white-space:nowrap;
+}
+.cls--abstract .cls__head{
+  height:50px;
+  font-style:italic;
+  flex-direction:column;
+  gap:0;
+  justify-content:center;
+}
+.cls__st{
+  font-size:8.5px;
+  font-weight:700;
+  letter-spacing:.08em;
+  color:var(--fg);
+  line-height:13px;
+}
+.cls ul{margin:0;padding:5px 0;list-style:none}
+.cls ul.m{border-top:1px solid var(--bd);background:linear-gradient(#fbfcfe,#fff)}
+.cls li{
+  height:21px;
+  line-height:21px;
+  padding:0 10px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-size:11px;
+}
+.vis{display:inline-block;width:12px;font-weight:700;color:var(--fg)}
+.idt{font-weight:600;color:#233246}
+.typ{color:#7b8a9d}
+.typ::before{content:": "}
+.met{color:#233246}
+.typ.m::before{content:": "}
+
+/* zonas */
+.z-pres{--bd:#b9d4e0;--hd:#e9f3f8;--fg:#2a6b86}
+.z-svc{--bd:#ccc4e6;--hd:#f2eefa;--fg:#5f4b9c}
+.z-dom{--bd:#c0dccd;--hd:#ebf6f0;--fg:#2c7357}
+.z-doc{--bd:#e3c3ca;--hd:#fbeff2;--fg:#a3485c}
+.z-dir{--bd:#e7ceb5;--hd:#fcf2e7;--fg:#a2662f}
+
+/* rótulos de multiplicidade / verbos */
+.lbl{
+  position:absolute;
+  transform:translate(-50%,-50%);
+  font-size:9px;
+  line-height:1.2;
+  color:#4b5b6e;
+  background:#fff;
+  padding:1px 3px;
+  border-radius:3px;
+  white-space:nowrap;
+  letter-spacing:.01em;
+}
+.lbl.mult{font-weight:700;color:#3d4d61}
+.lbl.verb{font-style:italic;color:#5b6b7e}
+.lbl.dep{color:#6b5f96;font-style:italic}
+
+/* zoom responsivo */
+@media (max-width:2000px){:root{--zoom:.9}}
+@media (max-width:1760px){:root{--zoom:.78}}
+@media (max-width:1500px){:root{--zoom:.66}}
+@media (max-width:1240px){:root{--zoom:.54}}
+@media (max-width:1000px){:root{--zoom:.42}}
+@media (max-width:820px){:root{--zoom:.33}}
+
+@page{size:A3 landscape;margin:7mm}
+@media print{
+  body,.canvas *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:#fff}
+  .viewport{overflow:visible;padding:0}
+  .canvas{zoom:.69;margin:0 auto;page-break-inside:avoid;break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<div class="viewport">
+  <div class="canvas" role="img" aria-label="Diagrama de classes do sistema IncluiTEA-Direitos">
+
+    <svg class="wires" viewBox="0 0 1940 1520" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="diamond" viewBox="0 0 16 10" markerWidth="16" markerHeight="10"
+                refX="0" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+          <path d="M0,5 L8,0 L16,5 L8,10 Z" fill="#7a8ba0"/>
+        </marker>
+        <marker id="tri" viewBox="0 0 16 12" markerWidth="16" markerHeight="12"
+                refX="16" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+          <path d="M0,0 L16,6 L0,12 Z" fill="#ffffff" stroke="#7a8ba0" stroke-width="1.3"/>
+        </marker>
+        <marker id="arrow" viewBox="0 0 10 10" markerWidth="10" markerHeight="10"
+                refX="10" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+          <path d="M0,1 L9,5 L0,9" fill="none" stroke="#8b7fb4" stroke-width="1.3"/>
+        </marker>
+      </defs>
+
+      <g fill="none" stroke="#7a8ba0" stroke-width="1.4" stroke-linejoin="round">
+        <path d="M360,160 H440"/>
+        <path d="M740,150 H820" marker-start="url(#diamond)"/>
+        <path d="M1120,140 H1200"/>
+        <path d="M440,720 H360" marker-start="url(#diamond)"/>
+        <path d="M740,720 H820" marker-start="url(#diamond)"/>
+        <path d="M1120,740 H1200"/>
+        <path d="M970,869 V940" marker-start="url(#diamond)"/>
+        <path d="M1500,720 H1540 V520 H1580"/>
+        <path d="M1730,568 V620" marker-start="url(#diamond)"/>
+        <path d="M1350,869 V940" marker-start="url(#diamond)"/>
+        <path d="M1350,1147 V1280" marker-start="url(#diamond)"/>
+        <path d="M1200,1320 H1160 V1100 H1120" marker-end="url(#arrow)"/>
+        <path d="M210,1280 V1200 H970 V1161" marker-end="url(#tri)"/>
+        <path d="M590,1280 V1200"/>
+        <path d="M970,1280 V1200"/>
+      </g>
+
+      <g fill="none" stroke="#8b7fb4" stroke-width="1.35" stroke-dasharray="6 5" stroke-linejoin="round">
+        <path d="M210,267 V331" marker-end="url(#arrow)"/>
+        <path d="M1500,400 H1571" marker-end="url(#arrow)"/>
+        <path d="M970,463 V500 H390 V1050 H369" marker-end="url(#arrow)"/>
+        <path d="M1200,150 H1160 V580 H1280 V611" marker-end="url(#arrow)"/>
+      </g>
+    </svg>
+
+    <article class="cls z-pres" style="left:60px;top:60px;height:207px">
+      <div class="cls__head">SessaoWizard</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">idSessao</span><span class="typ">UUID</span></li>
+        <li><span class="vis">−</span><span class="idt">iniciadaEm</span><span class="typ">DateTime</span></li>
+        <li><span class="vis">−</span><span class="idt">etapaAtual</span><span class="typ">int</span></li>
+        <li><span class="vis">−</span><span class="idt">concluida</span><span class="typ">boolean</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">avancar()</span><span class="typ m">void</span></li>
+        <li><span class="vis">+</span><span class="met">voltar()</span><span class="typ m">void</span></li>
+        <li><span class="vis">+</span><span class="met">gerarChecklist()</span><span class="typ m">Checklist</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-pres" style="left:440px;top:60px;height:186px">
+      <div class="cls__head">EtapaWizard</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">numero</span><span class="typ">int</span></li>
+        <li><span class="vis">−</span><span class="idt">titulo</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">descricao</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">obrigatoria</span><span class="typ">boolean</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">validar(respostas)</span><span class="typ m">boolean</span></li>
+        <li><span class="vis">+</span><span class="met">perguntas()</span><span class="typ m">List&lt;Pergunta&gt;</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-pres" style="left:820px;top:60px;height:186px">
+      <div class="cls__head">Pergunta</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">id</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">enunciado</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">tipo</span><span class="typ">TipoPergunta</span></li>
+        <li><span class="vis">−</span><span class="idt">opcoes</span><span class="typ">List&lt;String&gt;</span></li>
+        <li><span class="vis">−</span><span class="idt">obrigatoria</span><span class="typ">boolean</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">ehCondicional(respostas)</span><span class="typ m">boolean</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-pres" style="left:1200px;top:60px;height:165px">
+      <div class="cls__head">RespostaFormulario</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">valor</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">respondidaEm</span><span class="typ">DateTime</span></li>
+        <li><span class="vis">−</span><span class="idt">perguntaId</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">sessaoId</span><span class="typ">UUID</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">atualizar(valor)</span><span class="typ m">void</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-svc" style="left:60px;top:340px;height:144px">
+      <div class="cls__head">RepositorioLocal</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">chave</span><span class="typ">String</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">salvar(dados)</span><span class="typ m">void</span></li>
+        <li><span class="vis">+</span><span class="met">recuperar(chave)</span><span class="typ m">String</span></li>
+        <li><span class="vis">+</span><span class="met">remover(chave)</span><span class="typ m">void</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-svc" style="left:820px;top:340px;height:123px">
+      <div class="cls__head">GeradorPDF</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">margem</span><span class="typ">float</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">gerarDeclaracao(declaracao)</span><span class="typ m">Blob</span></li>
+        <li><span class="vis">+</span><span class="met">gerarChecklistPDF(checklist)</span><span class="typ m">Blob</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-svc" style="left:1200px;top:340px;height:123px">
+      <div class="cls__head">ServicoElegibilidade</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">limiteRendaPerCapita</span><span class="typ">decimal</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">avaliar(familia, beneficio)</span><span class="typ m">Resultado</span></li>
+        <li><span class="vis">+</span><span class="met">criteriosPendentes()</span><span class="typ m">List</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-dir" style="left:1580px;top:340px;height:228px">
+      <div class="cls__head">Beneficio</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">id</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">nome</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">orgaoResponsavel</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">baseLegal</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">prazoEstimado</span><span class="typ">int</span></li>
+        <li><span class="vis">−</span><span class="idt">documentosExigidos</span><span class="typ">List&lt;String&gt;</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">orientacoes()</span><span class="typ m">List</span></li>
+        <li><span class="vis">+</span><span class="met">ehAplicavel(crianca)</span><span class="typ m">boolean</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-dir" style="left:1580px;top:620px;height:165px">
+      <div class="cls__head">CriterioElegibilidade</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">descricao</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">tipo</span><span class="typ">TipoCriterio</span></li>
+        <li><span class="vis">−</span><span class="idt">valorReferencia</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">obrigatorio</span><span class="typ">boolean</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">atendidoPor(familia)</span><span class="typ m">boolean</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-dom" style="left:60px;top:620px;height:228px">
+      <div class="cls__head">Responsavel</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">id</span><span class="typ">UUID</span></li>
+        <li><span class="vis">−</span><span class="idt">nome</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">cpf</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">parentesco</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">telefone</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">municipio</span><span class="typ">String</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">cadastrarFamilia()</span><span class="typ m">void</span></li>
+        <li><span class="vis">+</span><span class="met">atualizarDados(dados)</span><span class="typ m">void</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-dom" style="left:440px;top:620px;height:207px">
+      <div class="cls__head">Familia</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">id</span><span class="typ">UUID</span></li>
+        <li><span class="vis">−</span><span class="idt">rendaFamiliarTotal</span><span class="typ">decimal</span></li>
+        <li><span class="vis">−</span><span class="idt">possuiCadUnico</span><span class="typ">boolean</span></li>
+        <li><span class="vis">−</span><span class="idt">endereco</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">uf</span><span class="typ">String</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">rendaPerCapita()</span><span class="typ m">decimal</span></li>
+        <li><span class="vis">+</span><span class="met">totalMembros()</span><span class="typ m">int</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-dom" style="left:820px;top:620px;height:249px">
+      <div class="cls__head">Crianca</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">id</span><span class="typ">UUID</span></li>
+        <li><span class="vis">−</span><span class="idt">nome</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">dataNascimento</span><span class="typ">Date</span></li>
+        <li><span class="vis">−</span><span class="idt">cpf</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">diagnostico</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">cid</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">nivelSuporte</span><span class="typ">NivelSuporte</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">calcularIdade()</span><span class="typ m">int</span></li>
+        <li><span class="vis">+</span><span class="met">resumoClinico()</span><span class="typ m">String</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-dir" style="left:1200px;top:620px;height:249px">
+      <div class="cls__head">Requerimento</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">protocolo</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">dataAbertura</span><span class="typ">DateTime</span></li>
+        <li><span class="vis">−</span><span class="idt">status</span><span class="typ">StatusRequerimento</span></li>
+        <li><span class="vis">−</span><span class="idt">observacoes</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">beneficioId</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">criancaId</span><span class="typ">UUID</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">avancarStatus()</span><span class="typ m">void</span></li>
+        <li><span class="vis">+</span><span class="met">prazos()</span><span class="typ m">List</span></li>
+        <li><span class="vis">+</span><span class="met">gerarDeclaracao()</span><span class="typ m">Declaracao</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-dir" style="left:60px;top:940px;height:207px">
+      <div class="cls__head">Declaracao</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">id</span><span class="typ">UUID</span></li>
+        <li><span class="vis">−</span><span class="idt">titulo</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">conteudo</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">geradaEm</span><span class="typ">DateTime</span></li>
+        <li><span class="vis">−</span><span class="idt">requerimentoId</span><span class="typ">UUID</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">validarCampos()</span><span class="typ m">boolean</span></li>
+        <li><span class="vis">+</span><span class="met">exportar()</span><span class="typ m">Blob</span></li>
+      </ul>
+    </article>
+
+    <article class="cls cls--abstract z-doc" style="left:820px;top:940px;height:221px">
+      <div class="cls__head"><span class="cls__st">«abstract»</span>Documento</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">id</span><span class="typ">UUID</span></li>
+        <li><span class="vis">−</span><span class="idt">nomeArquivo</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">anexadoEm</span><span class="typ">Date</span></li>
+        <li><span class="vis">−</span><span class="idt">status</span><span class="typ">StatusDocumento</span></li>
+        <li><span class="vis">−</span><span class="idt">origem</span><span class="typ">String</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">validar()</span><span class="typ m">boolean</span></li>
+        <li><span class="vis">+</span><span class="met">tamanho()</span><span class="typ m">long</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-dir" style="left:1200px;top:940px;height:207px">
+      <div class="cls__head">Checklist</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">id</span><span class="typ">UUID</span></li>
+        <li><span class="vis">−</span><span class="idt">geradoEm</span><span class="typ">DateTime</span></li>
+        <li><span class="vis">−</span><span class="idt">percentual</span><span class="typ">decimal</span></li>
+        <li><span class="vis">−</span><span class="idt">itens</span><span class="typ">List&lt;ItemChecklist&gt;</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">adicionarItem(item)</span><span class="typ m">void</span></li>
+        <li><span class="vis">+</span><span class="met">pendentes()</span><span class="typ m">List</span></li>
+        <li><span class="vis">+</span><span class="met">concluir(item)</span><span class="typ m">void</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-dir" style="left:1200px;top:1280px;height:207px">
+      <div class="cls__head">ItemChecklist</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">id</span><span class="typ">UUID</span></li>
+        <li><span class="vis">−</span><span class="idt">descricao</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">obrigatorio</span><span class="typ">boolean</span></li>
+        <li><span class="vis">−</span><span class="idt">concluido</span><span class="typ">boolean</span></li>
+        <li><span class="vis">−</span><span class="idt">documentoId</span><span class="typ">UUID</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">marcarConcluido()</span><span class="typ m">void</span></li>
+        <li><span class="vis">+</span><span class="met">evidencia()</span><span class="typ m">Documento</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-doc" style="left:60px;top:1280px;height:186px">
+      <div class="cls__head">LaudoMedico</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">cid</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">medicoResponsavel</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">crm</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">dataEmissao</span><span class="typ">Date</span></li>
+        <li><span class="vis">−</span><span class="idt">validade</span><span class="typ">Date</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">estaVigente()</span><span class="typ m">boolean</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-doc" style="left:440px;top:1280px;height:144px">
+      <div class="cls__head">ComprovanteResidencia</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">logradouro</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">municipio</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">competencia</span><span class="typ">String</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">validar()</span><span class="typ m">boolean</span></li>
+      </ul>
+    </article>
+
+    <article class="cls z-doc" style="left:820px;top:1280px;height:144px">
+      <div class="cls__head">ComprovanteCadUnico</div>
+      <ul>
+        <li><span class="vis">−</span><span class="idt">nis</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">folhaResumo</span><span class="typ">String</span></li>
+        <li><span class="vis">−</span><span class="idt">atualizadoEm</span><span class="typ">Date</span></li>
+      </ul>
+      <ul class="m">
+        <li><span class="vis">+</span><span class="met">validar()</span><span class="typ m">boolean</span></li>
+      </ul>
+    </article>
+
+    <span class="lbl mult" style="left:365px;top:148px">1</span>
+    <span class="lbl mult" style="left:435px;top:148px">1..*</span>
+    <span class="lbl verb" style="left:400px;top:177px">percorre</span>
+    <span class="lbl mult" style="left:745px;top:138px">1</span>
+    <span class="lbl mult" style="left:815px;top:138px">1..*</span>
+    <span class="lbl verb" style="left:780px;top:167px">contém</span>
+    <span class="lbl mult" style="left:1125px;top:128px">1</span>
+    <span class="lbl mult" style="left:1195px;top:128px">0..*</span>
+    <span class="lbl verb" style="left:1160px;top:157px">registra</span>
+    <span class="lbl dep" style="left:288px;top:303px">«salva»</span>
+    <span class="lbl mult" style="left:432px;top:708px">1</span>
+    <span class="lbl mult" style="left:364px;top:708px">1..*</span>
+    <span class="lbl verb" style="left:400px;top:739px">agrega</span>
+    <span class="lbl mult" style="left:748px;top:708px">1</span>
+    <span class="lbl mult" style="left:812px;top:708px">1..*</span>
+    <span class="lbl verb" style="left:780px;top:739px">possui</span>
+    <span class="lbl mult" style="left:1128px;top:728px">1</span>
+    <span class="lbl mult" style="left:1192px;top:728px">0..*</span>
+    <span class="lbl verb" style="left:1160px;top:759px">solicita</span>
+    <span class="lbl mult" style="left:982px;top:884px">1</span>
+    <span class="lbl mult" style="left:982px;top:928px">0..*</span>
+    <span class="lbl verb" style="left:1016px;top:906px">anexa</span>
+    <span class="lbl mult" style="left:1362px;top:884px">1</span>
+    <span class="lbl mult" style="left:1362px;top:928px">1</span>
+    <span class="lbl verb" style="left:1376px;top:906px">gera</span>
+    <span class="lbl mult" style="left:1362px;top:1160px">1</span>
+    <span class="lbl mult" style="left:1362px;top:1266px">1..*</span>
+    <span class="lbl verb" style="left:1376px;top:1213px">contém</span>
+    <span class="lbl mult" style="left:1516px;top:736px">0..*</span>
+    <span class="lbl mult" style="left:1574px;top:536px">1</span>
+    <span class="lbl verb" style="left:1520px;top:700px">requer</span>
+    <span class="lbl mult" style="left:1742px;top:580px">1</span>
+    <span class="lbl mult" style="left:1742px;top:610px">1..*</span>
+    <span class="lbl verb" style="left:1690px;top:594px">avalia</span>
+    <span class="lbl dep" style="left:1540px;top:388px">«verifica»</span>
+    <span class="lbl dep" style="left:700px;top:488px">«gera»</span>
+    <span class="lbl dep" style="left:1222px;top:568px">«preenche»</span>
+    <span class="lbl mult" style="left:1132px;top:1112px">0..1</span>
+    <span class="lbl verb" style="left:1184px;top:1205px">«evidencia»</span>
+
+  </div>
+</div>
+</body>
+</html>
